@@ -12,6 +12,12 @@
     <meta name="author" content="Johannes Stein">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="../bower_components/udefine/dist/udefine.js"></script>
+    <script src="../bower_components/mixer/dist/mixer.js"></script>
+    <script src="../bower_components/animframe/dist/animframe.js"></script>
+    <script src="../bower_components/eventmap/dist/eventmap.js"></script>
+    <script src="../dist/chione.js"></script>
 
     <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
     <link rel="shortcut icon" href="/favicon.ico">
@@ -20,5 +26,12 @@
 
   <body>
 
+    <script>
+      new chione.Game(function() {
+        this.scene(function() {
+          console.log(1);
+        });
+      });
+    </script>
   </body>
 </html>
