@@ -16,7 +16,7 @@ module.exports = (grunt) ->
     coffee:
       app:
         files:
-          'dist/chione.js': ['dist/chione.coffee', 'udefine/config.coffee']
+          'dist/chione.js': ['udefine/*.coffee', 'dist/chione.coffee']
       test:
         files: [{
           expand: true,
