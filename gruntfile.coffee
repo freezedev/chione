@@ -8,6 +8,9 @@ module.exports = (grunt) ->
       test: ['test/**/*.js']
     amd_tamer:
       combine:
+        options:
+          base: 'src/'
+          namespace: 'chione'
         files:
           'dist/chione.coffee': 'src/**/*.coffee'
     coffee:
