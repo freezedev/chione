@@ -6,7 +6,7 @@ udefine ['chione/base', 'chione/scene'], (Base, Scene) ->
       super null, descriptor
    
     scene: (obj) ->
-      scene = if obj instanceof Scene
+      scene = if typeof obj is 'object' and obj instanceof Scene
         obj.parent = @
         obj
       else
