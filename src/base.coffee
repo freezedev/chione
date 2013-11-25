@@ -7,4 +7,7 @@ udefine ->
         # TODO: Don't overwrite prototype methods
         @[key] = value for key, value of descriptor
    
-     log: ->
+    log: (args...) ->
+      nameArg = (@name || @constructor.name) + ': '
+      
+      console.log.apply console, [].concat.apply(nameArg, args)
