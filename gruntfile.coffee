@@ -6,15 +6,14 @@ module.exports = (grunt) ->
     clean:
       dist: ['dist'],
       test: ['test/**/*.js']
+    amd_tamer:
+      combine:
+        files:
+          'dist/chione.coffee': 'src/**/*.coffee'
     coffee:
       app:
-        files: [{
-          expand: true,
-          cwd: 'src/'
-          src: ['*.coffee'],
-          dest: 'dist/',
-          ext: '.js'
-        }]
+        files:
+          'dist/chione.js': 'dist/chione.coffee'
       test:
         files: [{
           expand: true,
@@ -47,4 +46,5 @@ module.exports = (grunt) ->
     'coffeelint'
   ]
   
-  grunt.registerTask 'default', 'Default task', ['coffee', 'test', 'uglify']
+  grunt.registerTask 'default', 'Default task',
+    ['amd_tamer', 'coffee', 'test', 'uglify']
