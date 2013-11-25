@@ -13,3 +13,5 @@ udefine ['chione/base', 'chione/scene'], (Base, Scene) ->
         new Scene @, obj
    
       @scenes.push scene
+      
+    @run: (sceneName) ->
