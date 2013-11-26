@@ -1,2 +1,2 @@
 udefine ['chione/base'], (Base) ->
-  class Components extends Base
+  class Component extends Base
