@@ -19,10 +19,20 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
       
       console.log.apply console, [].concat.apply(nameArg, args)
 
+define 'chione/bind', ->
+  (container, element, type) ->
+    
+
 udefine 'chione/component', ['chione/base'], (Base) ->
-  class Components extends Base
+  class Component extends Base
 udefine 'chione/entity', ['chione/base'], (Base) ->
   class Entity extends Base
+    constructor: ->
+      components = {}
+      
+      super
+    
+    component: ->
 
 udefine 'chione/game', ['chione/base', 'chione/scene'], (Base, Scene) ->
   class Game extends Base
@@ -32,7 +42,6 @@ udefine 'chione/game', ['chione/base', 'chione/scene'], (Base, Scene) ->
       super null, descriptor
    
     scene: (obj) ->
-      console.log Scene
       scene = if typeof obj is 'object' and obj instanceof Scene
         obj.parent = @
         obj

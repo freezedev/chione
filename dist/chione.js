@@ -60,30 +60,37 @@
     })();
   });
 
-  udefine('chione/component', ['chione/base'], function(Base) {
-    var Components, _ref;
-    return Components = (function(_super) {
-      __extends(Components, _super);
+  define('chione/bind', function() {
+    return function(container, element, type) {};
+  });
 
-      function Components() {
-        _ref = Components.__super__.constructor.apply(this, arguments);
+  udefine('chione/component', ['chione/base'], function(Base) {
+    var Component, _ref;
+    return Component = (function(_super) {
+      __extends(Component, _super);
+
+      function Component() {
+        _ref = Component.__super__.constructor.apply(this, arguments);
         return _ref;
       }
 
-      return Components;
+      return Component;
 
     })(Base);
   });
 
   udefine('chione/entity', ['chione/base'], function(Base) {
-    var Entity, _ref;
+    var Entity;
     return Entity = (function(_super) {
       __extends(Entity, _super);
 
       function Entity() {
-        _ref = Entity.__super__.constructor.apply(this, arguments);
-        return _ref;
+        var components;
+        components = {};
+        Entity.__super__.constructor.apply(this, arguments);
       }
+
+      Entity.prototype.component = function() {};
 
       return Entity;
 
@@ -102,7 +109,6 @@
 
       Game.prototype.scene = function(obj) {
         var scene;
-        console.log(Scene);
         scene = typeof obj === 'object' && obj instanceof Scene ? (obj.parent = this, obj) : new Scene(this, obj);
         return this.scenes.push(scene);
       };
