@@ -1,3 +1,3 @@
-define ->
-  (container, element, type) ->
-    
+udefine ->
+  (container, element) ->
+    container[element.name] = element
