@@ -54,3 +54,7 @@ udefine 'chione/game', ['chione/base', 'chione/scene'], (Base, Scene) ->
 
 udefine 'chione/scene', ['chione/base'], (Base) ->
   class Scene extends Base
+    constructor: ->
+      super
+      
+    entity: ->

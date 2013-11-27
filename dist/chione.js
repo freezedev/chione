@@ -123,14 +123,15 @@
   });
 
   udefine('chione/scene', ['chione/base'], function(Base) {
-    var Scene, _ref;
+    var Scene;
     return Scene = (function(_super) {
       __extends(Scene, _super);
 
       function Scene() {
-        _ref = Scene.__super__.constructor.apply(this, arguments);
-        return _ref;
+        Scene.__super__.constructor.apply(this, arguments);
       }
+
+      Scene.prototype.entity = function() {};
 
       return Scene;
 
