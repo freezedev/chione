@@ -19,9 +19,9 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
       
       console.log.apply console, [].concat.apply(nameArg, args)
 
-define 'chione/bind', ->
-  (container, element, type) ->
-    
+udefine 'chione/bind', ->
+  (container, element) ->
+    container[element.name] = element
 
 udefine 'chione/component', ['chione/base'], (Base) ->
   class Component extends Base

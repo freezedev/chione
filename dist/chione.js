@@ -60,8 +60,10 @@
     })();
   });
 
-  define('chione/bind', function() {
-    return function(container, element, type) {};
+  udefine('chione/bind', function() {
+    return function(container, element) {
+      return container[element.name] = element;
+    };
   });
 
   udefine('chione/component', ['chione/base'], function(Base) {
