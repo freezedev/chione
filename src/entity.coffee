@@ -1,9 +1,9 @@
-udefine ['chione/component', 'chione/mixins/bind'], (Component, bind) ->
+udefine ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
   class Entity extends Component
     constructor: ->
       super
       
-      @on 'draw', =>
+      drawable @
     
     component: (factory) -> bind @, factory, Component
       
