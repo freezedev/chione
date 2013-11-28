@@ -6,9 +6,9 @@ udefine ->
     
     if typeof factory is 'function' or typeof factory is 'object'
       if factory instanceof Type
-        element = factory      
+        element = factory
+        element.parent = container    
       else
         element = new (Function::bind.apply Type, [container, factory])
     
-    element.parent = container    
     container.children[element.name] = element
