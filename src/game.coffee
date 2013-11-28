@@ -1,5 +1,5 @@
-udefine ['chione/component', 'chione/mixins/bind', 'chione/scene'], (Component, bind, Scene) ->
-  class Game extends Component
+udefine ['chione/entity', 'chione/mixins/bind', 'chione/scene'], (Entity, bind, Scene) ->
+  class Game extends Entity
     constructor: (descriptor) ->
       super null, descriptor
    
