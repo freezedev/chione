@@ -1,4 +1,4 @@
 udefine ->
   (context) ->
-    context.on 'draw' ->
+    context.on 'draw', ->
       
