@@ -13,6 +13,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <script src="../bower_components/almond/almond.js"></script>
     <script src="../bower_components/udefine/dist/udefine.js"></script>
     <script src="../bower_components/mixer/dist/mixer.js"></script>
     <script src="../bower_components/animframe/dist/animframe.js"></script>
@@ -27,9 +28,11 @@
   <body>
 
     <script>
-      new chione.Game(function() {
-        this.scene(function() {
-          console.log(1);
+      require(['chione/game'], function(Game) {
+        new Game(function() {
+          this.scene(function() {
+            console.log(1);
+          });
         });
       });
     </script>
