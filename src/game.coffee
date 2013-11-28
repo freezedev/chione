@@ -1,9 +1,9 @@
 udefine ['chione/component', 'chione/mixins/bind', 'chione/scene'], (Component, bind, Scene) ->
   class Game extends Component
-    constructor: (descriptor) -> 
+    constructor: (descriptor) ->
       super null, descriptor
    
-    scene: (factory) -> 
+    scene: (factory) ->
       bind @, factory, Scene
       
     @run: (sceneName) ->
