@@ -28,6 +28,7 @@
     "eventmap": "~1.3.13",
     "mixer": "~0.5.0",
     "udefine": "~0.8.8",
-    "animframe": "~1.1.4"
+    "animframe": "~1.1.4",
+    "almond": "~0.2.7"
   }
 }
