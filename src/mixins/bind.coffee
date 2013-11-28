@@ -9,6 +9,6 @@ udefine ->
         element = factory
         element.parent = container    
       else
-        element = new (Function::bind.apply Type, [container, factory])
+        element = new Type container, factory 
     
     container.children[element.name] = element
