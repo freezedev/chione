@@ -1,17 +1,10 @@
-udefine ['chione/base', 'chione/scene'], (Base, Scene) ->
-  class Game extends Base
-    constructor: (descriptor) ->
-      @scenes = []
-   
+udefine ['chione/component', 'chione/mixins/bind', 'chione/scene'], (Component, bind, Scene) ->
+  class Game extends Component
+    constructor: (descriptor) -> 
       super null, descriptor
    
-    scene: (obj) ->
-      scene = if typeof obj is 'object' and obj instanceof Scene
-        obj.parent = @
-        obj
-      else
-        new Scene @, obj
-   
-      @scenes.push scene
+    scene: (factory) -> 
+      bind @, factory, Scene
       
     @run: (sceneName) ->
+      
