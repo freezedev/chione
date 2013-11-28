@@ -38,6 +38,7 @@ module.exports = (grunt) ->
         run: true
       all: ['test/browser/*.html']
     coffeelint:
+      options: grunt.file.readJSON 'coffeelint.json'
       app: ['src/*.coffee']
       tests: ['test/**/*.coffee']
       grunt: ['gruntfile.coffee']
