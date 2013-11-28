@@ -19,42 +19,64 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
       
       console.log.apply console, [].concat.apply(nameArg, args)
 
-udefine 'chione/bind', ->
-  (container, element) ->
-    container[element.name] = element
-
-udefine 'chione/component', ['chione/base'], (Base) ->
+udefine 'chione/component', ['chione/base', 'chione/mixins/updatable'], (Base, updatable) ->
   class Component extends Base
-udefine 'chione/entity', ['chione/base'], (Base) ->
-  class Entity extends Base
     constructor: ->
-      components = {}
-      
       super
+      
+      updatable @
+udefine 'chione/entity', ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
+  class Entity extends Component
+    constructor: ->
+      super
+      
+      drawable @
     
-    component: ->
-
-udefine 'chione/game', ['chione/base', 'chione/scene'], (Base, Scene) ->
-  class Game extends Base
+    component: (factory) -> bind @, factory, Component
+      
+udefine 'chione/factory/game', ['chione/game'], (Game) -> (factory) -> new Game factory
+udefine 'chione/game', ['chione/entity', 'chione/mixins/bind', 'chione/scene'], (Entity, bind, Scene) ->
+  class Game extends Entity
     constructor: (descriptor) ->
-      @scenes = []
-   
       super null, descriptor
    
-    scene: (obj) ->
-      scene = if typeof obj is 'object' and obj instanceof Scene
-        obj.parent = @
-        obj
-      else
-        new Scene @, obj
-   
-      @scenes.push scene
+    scene: (factory) ->
+      bind @, factory, Scene
       
     @run: (sceneName) ->
+      
 
-udefine 'chione/scene', ['chione/base'], (Base) ->
-  class Scene extends Base
+udefine 'chione/mixins/bind', ->
+  (container, factory, Type) ->
+    container.children or= {}
+    
+    element = null
+    
+    if typeof factory is 'function' or typeof factory is 'object'
+      if factory instanceof Type
+        element = factory
+        element.parent = container    
+      else
+        element = new Type container, factory 
+    
+    container.children[element.name] = element
+
+udefine 'chione/mixins/drawable', ->
+  (context) ->
+    context.on 'draw', ->
+      
+
+udefine 'chione/mixins/updatable', ->
+  (context) ->
+    context.on 'update', ->
+      if context.children?
+        for key, value of context.children
+          value.trigger? 'update', arguments
+        null
+
+udefine 'chione/scene', ['chione/entity', 'chione/mixins/bind'], (Entity, bind) ->
+  class Scene extends Entity
     constructor: ->
       super
       
-    entity: ->
+    entity: (factory) -> bind @, factory, Component

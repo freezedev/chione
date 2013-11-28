@@ -60,20 +60,14 @@
     })();
   });
 
-  udefine('chione/bind', function() {
-    return function(container, element) {
-      return container[element.name] = element;
-    };
-  });
-
-  udefine('chione/component', ['chione/base'], function(Base) {
-    var Component, _ref;
+  udefine('chione/component', ['chione/base', 'chione/mixins/updatable'], function(Base, updatable) {
+    var Component;
     return Component = (function(_super) {
       __extends(Component, _super);
 
       function Component() {
-        _ref = Component.__super__.constructor.apply(this, arguments);
-        return _ref;
+        Component.__super__.constructor.apply(this, arguments);
+        updatable(this);
       }
 
       return Component;
@@ -81,48 +75,93 @@
     })(Base);
   });
 
-  udefine('chione/entity', ['chione/base'], function(Base) {
+  udefine('chione/entity', ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], function(Component, bind, drawable) {
     var Entity;
     return Entity = (function(_super) {
       __extends(Entity, _super);
 
       function Entity() {
-        var components;
-        components = {};
         Entity.__super__.constructor.apply(this, arguments);
+        drawable(this);
       }
 
-      Entity.prototype.component = function() {};
+      Entity.prototype.component = function(factory) {
+        return bind(this, factory, Component);
+      };
 
       return Entity;
 
-    })(Base);
+    })(Component);
   });
 
-  udefine('chione/game', ['chione/base', 'chione/scene'], function(Base, Scene) {
+  udefine('chione/factory/game', ['chione/game'], function(Game) {
+    return function(factory) {
+      return new Game(factory);
+    };
+  });
+
+  udefine('chione/game', ['chione/entity', 'chione/mixins/bind', 'chione/scene'], function(Entity, bind, Scene) {
     var Game;
     return Game = (function(_super) {
       __extends(Game, _super);
 
       function Game(descriptor) {
-        this.scenes = [];
         Game.__super__.constructor.call(this, null, descriptor);
       }
 
-      Game.prototype.scene = function(obj) {
-        var scene;
-        scene = typeof obj === 'object' && obj instanceof Scene ? (obj.parent = this, obj) : new Scene(this, obj);
-        return this.scenes.push(scene);
+      Game.prototype.scene = function(factory) {
+        return bind(this, factory, Scene);
       };
 
       Game.run = function(sceneName) {};
 
       return Game;
 
-    })(Base);
+    })(Entity);
   });
 
-  udefine('chione/scene', ['chione/base'], function(Base) {
+  udefine('chione/mixins/bind', function() {
+    return function(container, factory, Type) {
+      var element;
+      container.children || (container.children = {});
+      element = null;
+      if (typeof factory === 'function' || typeof factory === 'object') {
+        if (factory instanceof Type) {
+          element = factory;
+          element.parent = container;
+        } else {
+          element = new Type(container, factory);
+        }
+      }
+      return container.children[element.name] = element;
+    };
+  });
+
+  udefine('chione/mixins/drawable', function() {
+    return function(context) {
+      return context.on('draw', function() {});
+    };
+  });
+
+  udefine('chione/mixins/updatable', function() {
+    return function(context) {
+      return context.on('update', function() {
+        var key, value, _ref;
+        if (context.children != null) {
+          _ref = context.children;
+          for (key in _ref) {
+            value = _ref[key];
+            if (typeof value.trigger === "function") {
+              value.trigger('update', arguments);
+            }
+          }
+          return null;
+        }
+      });
+    };
+  });
+
+  udefine('chione/scene', ['chione/entity', 'chione/mixins/bind'], function(Entity, bind) {
     var Scene;
     return Scene = (function(_super) {
       __extends(Scene, _super);
@@ -131,11 +170,13 @@
         Scene.__super__.constructor.apply(this, arguments);
       }
 
-      Scene.prototype.entity = function() {};
+      Scene.prototype.entity = function(factory) {
+        return bind(this, factory, Component);
+      };
 
       return Scene;
 
-    })(Base);
+    })(Entity);
   });
 
 }).call(this);
