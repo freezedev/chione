@@ -1,6 +1,6 @@
-udefine ['chione/base'], (Base) ->
-  class Scene extends Base
+udefine ['chione/component', 'chione/mixins/bind'], (Component, bind) ->
+  class Scene extends Component
     constructor: ->
       super
       
-    entity: ->
+    entity: (factory) -> bind @, factory, Component
