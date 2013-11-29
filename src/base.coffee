@@ -3,6 +3,8 @@ udefine ['mixer', 'eventmap'], (mixer, EventMap) ->
     constructor: (@parent, descriptor) ->
       mixer [@, Base::], new EventMap()
       
+      @name = @type = @constructor.name
+      
       if typeof descriptor is 'function'
         descriptor.call @
       else
@@ -15,6 +17,4 @@ udefine ['mixer', 'eventmap'], (mixer, EventMap) ->
             @[key] = value
    
     log: (args...) ->
-      nameArg = (@name || @constructor.name) + ': '
-      
-      console.log.apply console, [].concat.apply(nameArg, args)
+      console.log.apply console, [].concat.apply("#{@name}: ", args)
