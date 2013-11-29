@@ -1,8 +1,12 @@
 udefine ['mixer', 'eventmap'], (mixer, EventMap) ->
   class Base
+    @idIndex = 0
+    
     constructor: (@parent, descriptor) ->
       mixer [@, Base::], new EventMap()
       
+      @idIndex++
+      @id = "#{@constructor.name.toLowerCase()}#{@idIndex}"
       @name = @type = @constructor.name
       
       if typeof descriptor is 'function'
