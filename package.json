@@ -13,7 +13,8 @@
     "grunt": "~0.4.2",
     "grunt-coffeelint": "0.0.7",
     "grunt-mocha": "~0.4.6",
-    "grunt-amd-tamer": "~0.1.5"
+    "grunt-amd-tamer": "~0.1.5",
+    "matchdep": "~0.3.0"
   },
   "scripts": {
     "test": "grunt test"
