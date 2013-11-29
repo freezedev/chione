@@ -1,12 +1,9 @@
 udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
   class Base
-    @idIndex = 0
-    
     constructor: (@parent, descriptor) ->
       mixer [@, Base::], new EventMap()
       
-      @idIndex++
-      @id = "#{@constructor.name.toLowerCase()}#{@idIndex}"
+      @id = "#{@constructor.name.toLowerCase()}#{++@idIndex}"
       @name = @type = @constructor.name
       
       if typeof descriptor is 'function'
@@ -19,6 +16,8 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
           else
             # TODO: Don't overwrite prototype methods
             @[key] = value
-   
+    
+    idIndex: 0
+    
     log: (args...) ->
       console.log.apply console, [].concat.apply("#{@name}: ", args)
