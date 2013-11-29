@@ -11,4 +11,4 @@ udefine ->
       else
         element = new Type container, factory 
     
-    container.children[element.name] = element
+    container.children[element.id] = element
