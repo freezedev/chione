@@ -1,4 +1,4 @@
-udefine ['mixer', 'eventmap'], (mixer, EventMap) ->
+udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
   class Base
     @idIndex = 0
     
