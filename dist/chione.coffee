@@ -3,6 +3,9 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
     constructor: (@parent, descriptor) ->
       mixer [@, Base::], new EventMap()
       
+      @id = "#{@constructor.name.toLowerCase()}#{++@idIndex}"
+      @name = @type = @constructor.name
+      
       if typeof descriptor is 'function'
         descriptor.call @
       else
@@ -13,19 +16,43 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
           else
             # TODO: Don't overwrite prototype methods
             @[key] = value
-   
+    
+    idIndex: 0
+    
     log: (args...) ->
-      nameArg = (@name || @constructor.name) + ': '
-      
-      console.log.apply console, [].concat.apply(nameArg, args)
+      console.log.apply console, [].concat.apply("#{@name}: ", args)
 
 udefine 'chione/component', ['chione/base', 'chione/mixins/updatable'], (Base, updatable) ->
+  toArray = (value, splitter = /[\s,]/) ->
+    arr = splitter.split splitter
+    
+    arr
+      .map (item) ->
+        item.trim()
+      .filter (item) -> !!item
+        
+    if arr.length then arr else null
+
   class Component extends Base
     constructor: ->
       super
       
+      tags = []
+      
+      Object.defineProperty @, 'tags',
+        get: -> tags
+        set: (val) ->
+          return tags = val unless tags?
+          
+          if Array.isArray val
+            tags = val
+          else
+            if typeof val is 'string'
+              tags = val.split(' ')
+      
       updatable @
 udefine 'chione/entity', ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
+      
   class Entity extends Component
     constructor: ->
       super
@@ -59,7 +86,7 @@ udefine 'chione/mixins/bind', ->
       else
         element = new Type container, factory 
     
-    container.children[element.name] = element
+    container.children[element.id] = element
 
 udefine 'chione/mixins/drawable', ->
   (context) ->

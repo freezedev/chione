@@ -31,6 +31,8 @@
         var evKey, evValue, key, value;
         this.parent = parent;
         mixer([this, Base.prototype], new EventMap());
+        this.id = "" + (this.constructor.name.toLowerCase()) + (++this.idIndex);
+        this.name = this.type = this.constructor.name;
         if (typeof descriptor === 'function') {
           descriptor.call(this);
         } else {
@@ -48,11 +50,12 @@
         }
       }
 
+      Base.prototype.idIndex = 0;
+
       Base.prototype.log = function() {
-        var args, nameArg;
+        var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-        nameArg = (this.name || this.constructor.name) + ': ';
-        return console.log.apply(console, [].concat.apply(nameArg, args));
+        return console.log.apply(console, [].concat.apply("" + this.name + ": ", args));
       };
 
       return Base;
@@ -61,12 +64,48 @@
   });
 
   udefine('chione/component', ['chione/base', 'chione/mixins/updatable'], function(Base, updatable) {
-    var Component;
+    var Component, toArray;
+    toArray = function(value, splitter) {
+      var arr;
+      if (splitter == null) {
+        splitter = /[\s,]/;
+      }
+      arr = splitter.split(splitter);
+      arr.map(function(item) {
+        return item.trim();
+      }).filter(function(item) {
+        return !!item;
+      });
+      if (arr.length) {
+        return arr;
+      } else {
+        return null;
+      }
+    };
     return Component = (function(_super) {
       __extends(Component, _super);
 
       function Component() {
+        var tags;
         Component.__super__.constructor.apply(this, arguments);
+        tags = [];
+        Object.defineProperty(this, 'tags', {
+          get: function() {
+            return tags;
+          },
+          set: function(val) {
+            if (tags == null) {
+              return tags = val;
+            }
+            if (Array.isArray(val)) {
+              return tags = val;
+            } else {
+              if (typeof val === 'string') {
+                return tags = val.split(' ');
+              }
+            }
+          }
+        });
         updatable(this);
       }
 
@@ -133,7 +172,7 @@
           element = new Type(container, factory);
         }
       }
-      return container.children[element.name] = element;
+      return container.children[element.id] = element;
     };
   });
 
