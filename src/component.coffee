@@ -3,10 +3,9 @@ udefine ['chione/base', 'chione/mixins/updatable'], (Base, updatable) ->
     arr = splitter.split splitter
     
     arr
-      .map (item) -> 
+      .map (item) ->
         item.trim()
-      .filter (item) ->
-        !!item
+      .filter (item) -> !!item
         
     if arr.length then arr else null
 
@@ -16,7 +15,7 @@ udefine ['chione/base', 'chione/mixins/updatable'], (Base, updatable) ->
       
       tags = []
       
-      Object.defineProperty @,
+      Object.defineProperty @, 'tags',
         get: -> tags
         set: (val) ->
           return tags = val unless tags?
