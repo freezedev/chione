@@ -27,3 +27,10 @@ udefine ['chione/base', 'chione/mixins/updatable'], (Base, updatable) ->
               tags = val.split(' ')
       
       updatable @
+      
+    find: (selector) ->
+      element = ''
+      searchFor = ''
+      
+      if selector.indexOf('#') is 0
+        
