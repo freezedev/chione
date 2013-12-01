@@ -1,4 +1,4 @@
-udefine ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
+udefine ['chione/component', 'chione/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
       
   class Entity extends Component
     constructor: ->
@@ -7,4 +7,5 @@ udefine ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], (C
       drawable @
     
     component: (factory) -> bind @, factory, Component
+    entity: (factory) -> bind @, factory, Entity
       

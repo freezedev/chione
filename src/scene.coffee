@@ -1,4 +1,4 @@
-udefine ['chione/entity', 'chione/mixins/bind'], (Entity, bind) ->
+udefine ['chione/entity', 'chione/bind'], (Entity, bind) ->
   class Scene extends Entity
     constructor: ->
       super
