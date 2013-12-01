@@ -32,5 +32,5 @@ udefine ['chione/base', 'chione/mixins/updatable'], (Base, updatable) ->
       element = ''
       searchFor = ''
       
-      if selector.indexOf('#') is 0
+      #if selector.indexOf('#') is 0
         
