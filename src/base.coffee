@@ -3,8 +3,16 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
     constructor: (@parent, descriptor) ->
       mixer [@, Base::], new EventMap()
       
-      @id = "#{@constructor.name.toLowerCase()}#{++@idIndex}"
-      @name = @type = @constructor.name
+      @type = @constructor.name
+      
+      id = "#{@constructor.name.toLowerCase()}#{++@idIndex}"
+      
+      Object.defineProperty @, 'id',
+        get: -> id
+        set: (val) -> id = val
+      
+      Object.defineProperty @, 'type',
+        get: -> @constructor.name
       
       if typeof descriptor is 'function'
         descriptor.call @
@@ -20,4 +28,4 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
     idIndex: 0
     
     log: (args...) ->
-      console.log.apply console, [].concat.apply("#{@name}: ", args)
+      console.log.apply console, [].concat.apply("[#{@type}] #{@id}: ", args)
