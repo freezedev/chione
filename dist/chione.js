@@ -28,11 +28,24 @@
     var Base;
     return Base = (function() {
       function Base(parent, descriptor) {
-        var evKey, evValue, key, value;
+        var evKey, evValue, id, key, value;
         this.parent = parent;
         mixer([this, Base.prototype], new EventMap());
-        this.id = "" + (this.constructor.name.toLowerCase()) + (++this.idIndex);
-        this.name = this.type = this.constructor.name;
+        this.type = this.constructor.name;
+        id = "" + (this.constructor.name.toLowerCase()) + (++this.idIndex);
+        Object.defineProperty(this, 'id', {
+          get: function() {
+            return id;
+          },
+          set: function(val) {
+            return id = val;
+          }
+        });
+        Object.defineProperty(this, 'type', {
+          get: function() {
+            return this.constructor.name;
+          }
+        });
         if (typeof descriptor === 'function') {
           descriptor.call(this);
         } else {
@@ -55,12 +68,31 @@
       Base.prototype.log = function() {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-        return console.log.apply(console, [].concat.apply("" + this.name + ": ", args));
+        return console.log.apply(console, [].concat.apply("[" + this.type + "] " + this.id + ": ", args));
       };
 
       return Base;
 
     })();
+  });
+
+  udefine('chione/bind/all', function() {});
+
+  udefine('chione/bind', function() {
+    return function(container, factory, Type) {
+      var element;
+      container.children || (container.children = {});
+      element = null;
+      if (typeof factory === 'function' || typeof factory === 'object') {
+        if (factory instanceof Type) {
+          element = factory;
+          element.parent = container;
+        } else {
+          element = new Type(container, factory);
+        }
+      }
+      return container.children[element.id] = element;
+    };
   });
 
   udefine('chione/component', ['chione/base', 'chione/mixins/updatable'], function(Base, updatable) {
@@ -109,12 +141,48 @@
         updatable(this);
       }
 
+      Component.prototype.find = function(selector) {
+        var element, searchFor;
+        element = '';
+        return searchFor = '';
+      };
+
       return Component;
 
     })(Base);
   });
 
-  udefine('chione/entity', ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], function(Component, bind, drawable) {
+  udefine('chione/components/animatable', ['chione/component'], function(Component) {
+    var Animatable, _ref;
+    return Animatable = (function(_super) {
+      __extends(Animatable, _super);
+
+      function Animatable() {
+        _ref = Animatable.__super__.constructor.apply(this, arguments);
+        return _ref;
+      }
+
+      return Animatable;
+
+    })(Component);
+  });
+
+  udefine('chione/components/audio', ['chione/component'], function(Component) {
+    var Audio, _ref;
+    return Audio = (function(_super) {
+      __extends(Audio, _super);
+
+      function Audio() {
+        _ref = Audio.__super__.constructor.apply(this, arguments);
+        return _ref;
+      }
+
+      return Audio;
+
+    })(Component);
+  });
+
+  udefine('chione/entity', ['chione/component', 'chione/bind', 'chione/mixins/drawable'], function(Component, bind, drawable) {
     var Entity;
     return Entity = (function(_super) {
       __extends(Entity, _super);
@@ -128,6 +196,10 @@
         return bind(this, factory, Component);
       };
 
+      Entity.prototype.entity = function(factory) {
+        return bind(this, factory, Entity);
+      };
+
       return Entity;
 
     })(Component);
@@ -139,7 +211,7 @@
     };
   });
 
-  udefine('chione/game', ['chione/entity', 'chione/mixins/bind', 'chione/scene'], function(Entity, bind, Scene) {
+  udefine('chione/game', ['chione/entity', 'chione/bind', 'chione/scene'], function(Entity, bind, Scene) {
     var Game;
     return Game = (function(_super) {
       __extends(Game, _super);
@@ -157,23 +229,6 @@
       return Game;
 
     })(Entity);
-  });
-
-  udefine('chione/mixins/bind', function() {
-    return function(container, factory, Type) {
-      var element;
-      container.children || (container.children = {});
-      element = null;
-      if (typeof factory === 'function' || typeof factory === 'object') {
-        if (factory instanceof Type) {
-          element = factory;
-          element.parent = container;
-        } else {
-          element = new Type(container, factory);
-        }
-      }
-      return container.children[element.id] = element;
-    };
   });
 
   udefine('chione/mixins/drawable', function() {
@@ -200,7 +255,23 @@
     };
   });
 
-  udefine('chione/scene', ['chione/entity', 'chione/mixins/bind'], function(Entity, bind) {
+  udefine('chione/preloader', ['chione/base'], function(Base) {
+    var Preloader;
+    return Preloader = (function(_super) {
+      __extends(Preloader, _super);
+
+      function Preloader() {}
+
+      Preloader.prototype.add = function(asset) {};
+
+      Preloader.prototype.run = function() {};
+
+      return Preloader;
+
+    })(Base);
+  });
+
+  udefine('chione/scene', ['chione/entity', 'chione/bind'], function(Entity, bind) {
     var Scene;
     return Scene = (function(_super) {
       __extends(Scene, _super);
@@ -214,6 +285,21 @@
       };
 
       return Scene;
+
+    })(Entity);
+  });
+
+  udefine('chione/sprite', ['chione/components/animatable', 'chione/entity'], function(Animatable, Entity) {
+    var Sprite;
+    return Sprite = (function(_super) {
+      __extends(Sprite, _super);
+
+      function Sprite() {
+        Sprite.__super__.constructor.apply(this, arguments);
+        this.component(new Animatable());
+      }
+
+      return Sprite;
 
     })(Entity);
   });

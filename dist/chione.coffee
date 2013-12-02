@@ -3,8 +3,16 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
     constructor: (@parent, descriptor) ->
       mixer [@, Base::], new EventMap()
       
-      @id = "#{@constructor.name.toLowerCase()}#{++@idIndex}"
-      @name = @type = @constructor.name
+      @type = @constructor.name
+      
+      id = "#{@constructor.name.toLowerCase()}#{++@idIndex}"
+      
+      Object.defineProperty @, 'id',
+        get: -> id
+        set: (val) -> id = val
+      
+      Object.defineProperty @, 'type',
+        get: -> @constructor.name
       
       if typeof descriptor is 'function'
         descriptor.call @
@@ -20,7 +28,24 @@ udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
     idIndex: 0
     
     log: (args...) ->
-      console.log.apply console, [].concat.apply("#{@name}: ", args)
+      console.log.apply console, [].concat.apply("[#{@type}] #{@id}: ", args)
+
+udefine 'chione/bind/all', ->
+  
+udefine 'chione/bind', ->
+  (container, factory, Type) ->
+    container.children or= {}
+    
+    element = null
+    
+    if typeof factory is 'function' or typeof factory is 'object'
+      if factory instanceof Type
+        element = factory
+        element.parent = container    
+      else
+        element = new Type container, factory 
+    
+    container.children[element.id] = element
 
 udefine 'chione/component', ['chione/base', 'chione/mixins/updatable'], (Base, updatable) ->
   toArray = (value, splitter = /[\s,]/) ->
@@ -51,7 +76,20 @@ udefine 'chione/component', ['chione/base', 'chione/mixins/updatable'], (Base, u
               tags = val.split(' ')
       
       updatable @
-udefine 'chione/entity', ['chione/component', 'chione/mixins/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
+      
+    find: (selector) ->
+      element = ''
+      searchFor = ''
+      
+      #if selector.indexOf('#') is 0
+        
+udefine 'chione/components/animatable', ['chione/component'], (Component) ->
+  class Animatable extends Component
+
+udefine 'chione/components/audio', ['chione/component'], (Component) ->
+  class Audio extends Component
+
+udefine 'chione/entity', ['chione/component', 'chione/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
       
   class Entity extends Component
     constructor: ->
@@ -60,9 +98,10 @@ udefine 'chione/entity', ['chione/component', 'chione/mixins/bind', 'chione/mixi
       drawable @
     
     component: (factory) -> bind @, factory, Component
+    entity: (factory) -> bind @, factory, Entity
       
 udefine 'chione/factory/game', ['chione/game'], (Game) -> (factory) -> new Game factory
-udefine 'chione/game', ['chione/entity', 'chione/mixins/bind', 'chione/scene'], (Entity, bind, Scene) ->
+udefine 'chione/game', ['chione/entity', 'chione/bind', 'chione/scene'], (Entity, bind, Scene) ->
   class Game extends Entity
     constructor: (descriptor) ->
       super null, descriptor
@@ -72,21 +111,6 @@ udefine 'chione/game', ['chione/entity', 'chione/mixins/bind', 'chione/scene'], 
       
     @run: (sceneName) ->
       
-
-udefine 'chione/mixins/bind', ->
-  (container, factory, Type) ->
-    container.children or= {}
-    
-    element = null
-    
-    if typeof factory is 'function' or typeof factory is 'object'
-      if factory instanceof Type
-        element = factory
-        element.parent = container    
-      else
-        element = new Type container, factory 
-    
-    container.children[element.id] = element
 
 udefine 'chione/mixins/drawable', ->
   (context) ->
@@ -101,9 +125,22 @@ udefine 'chione/mixins/updatable', ->
           value.trigger? 'update', arguments
         null
 
-udefine 'chione/scene', ['chione/entity', 'chione/mixins/bind'], (Entity, bind) ->
+udefine 'chione/preloader', ['chione/base'], (Base) ->
+  class Preloader extends Base
+    constructor: ->
+      
+    add: (asset) ->
+      
+    run: ->
+udefine 'chione/scene', ['chione/entity', 'chione/bind'], (Entity, bind) ->
   class Scene extends Entity
     constructor: ->
       super
       
     entity: (factory) -> bind @, factory, Component
+udefine 'chione/sprite', ['chione/components/animatable', 'chione/entity'], (Animatable, Entity) ->
+  class Sprite extends Entity
+    constructor: ->
+      super
+      
+      @component new Animatable()
