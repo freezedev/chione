@@ -1,4 +1,4 @@
-chione
+Chione
 ======
 
 [![Build Status](https://travis-ci.org/freezedev/chione.png?branch=master)](https://travis-ci.org/freezedev/chione)
