@@ -10,13 +10,13 @@ module.exports = (grunt) ->
       combine:
         options:
           base: 'src/'
-          namespace: 'chione'
+          namespace: pkg.name
         files:
-          'dist/chione.coffee': 'src/**/*.coffee'
+          'dist/<%= pkg.name %>.coffee': 'src/**/*.coffee'
     coffee:
       app:
         files:
-          'dist/chione.js': ['udefine/*.coffee', 'dist/chione.coffee']
+          'dist/<%= pkg.name %>.js': ['udefine/*.coffee', 'dist/<%= pkg.name %>.coffee']
       test:
         files: [{
           expand: true,
