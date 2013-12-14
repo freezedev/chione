@@ -29,6 +29,7 @@
     "mixedice": "~0.5.1",
     "udefine": "~0.8.8",
     "animframe": "~1.1.4",
-    "almond": "~0.2.7"
+    "almond": "~0.2.7",
+    "pencilbox": "~0.0.1"
   }
 }
