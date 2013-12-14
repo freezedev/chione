@@ -24,13 +24,13 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  udefine('chione/base', ['mixer', 'eventmap'], function(mixer, EventMap) {
+  udefine('chione/base', ['mixedice', 'eventmap'], function(mixedice, EventMap) {
     var Base;
     return Base = (function() {
       function Base(parent, descriptor) {
         var evKey, evValue, id, key, value;
         this.parent = parent;
-        mixer([this, Base.prototype], new EventMap());
+        mixedice([this, Base.prototype], new EventMap());
         this.type = this.constructor.name;
         id = "" + (this.constructor.name.toLowerCase()) + (++this.idIndex);
         Object.defineProperty(this, 'id', {

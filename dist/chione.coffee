@@ -1,7 +1,7 @@
-udefine 'chione/base', ['mixer', 'eventmap'], (mixer, EventMap) ->
+udefine 'chione/base', ['mixedice', 'eventmap'], (mixedice, EventMap) ->
   class Base
     constructor: (@parent, descriptor) ->
-      mixer [@, Base::], new EventMap()
+      mixedice [@, Base::], new EventMap()
       
       @type = @constructor.name
       
