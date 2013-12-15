@@ -31,5 +31,9 @@
     "animframe": "~1.1.4",
     "almond": "~0.2.7",
     "pencilbox": "~0.0.1"
+  },
+  "resolutions": {
+    "udefine": "~0.8.8",
+    "eventmap": "~1.3.13"
   }
 }
