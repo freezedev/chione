@@ -217,7 +217,11 @@
       __extends(Game, _super);
 
       function Game(descriptor) {
-        Game.__super__.constructor.call(this, null, descriptor);
+        if (!(this instanceof Game)) {
+          return new Game(descriptor);
+        } else {
+          Game.__super__.constructor.call(this, null, descriptor);
+        }
       }
 
       Game.prototype.scene = function(factory) {
