@@ -112,8 +112,8 @@ udefine 'chione/game', ['chione/entity', 'chione/bind', 'chione/scene'], (Entity
     scene: (factory) ->
       bind @, factory, Scene
       
-    @run: (sceneName) ->
-      
+    @run: (sceneName) =>
+      @trigger 'run', sceneName
 
 udefine 'chione/mixins/drawable', ->
   (context) ->

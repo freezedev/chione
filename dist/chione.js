@@ -228,11 +228,13 @@
         return bind(this, factory, Scene);
       };
 
-      Game.run = function(sceneName) {};
+      Game.run = function(sceneName) {
+        return Game.trigger('run', sceneName);
+      };
 
       return Game;
 
-    })(Entity);
+    }).call(this, Entity);
   });
 
   udefine('chione/mixins/drawable', function() {
