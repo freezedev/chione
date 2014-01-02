@@ -89,6 +89,8 @@ udefine 'chione/components/animatable', ['chione/component'], (Component) ->
 udefine 'chione/components/audio', ['chione/component'], (Component) ->
   class Audio extends Component
 
+udefine 'chione/components/collidable', ['chione/component'], (Component) ->
+  class Collidable extends Component
 udefine 'chione/entity', ['chione/component', 'chione/bind', 'chione/mixins/drawable'], (Component, bind, drawable) ->
       
   class Entity extends Component

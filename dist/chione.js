@@ -182,6 +182,21 @@
     })(Component);
   });
 
+  udefine('chione/components/collidable', ['chione/component'], function(Component) {
+    var Collidable, _ref;
+    return Collidable = (function(_super) {
+      __extends(Collidable, _super);
+
+      function Collidable() {
+        _ref = Collidable.__super__.constructor.apply(this, arguments);
+        return _ref;
+      }
+
+      return Collidable;
+
+    })(Component);
+  });
+
   udefine('chione/entity', ['chione/component', 'chione/bind', 'chione/mixins/drawable'], function(Component, bind, drawable) {
     var Entity;
     return Entity = (function(_super) {
