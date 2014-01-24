@@ -22,7 +22,8 @@
 (function() {
   var __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   udefine('chione/base', ['mixedice', 'eventmap'], function(mixedice, EventMap) {
     var Base;
@@ -203,6 +204,7 @@
       __extends(Entity, _super);
 
       function Entity() {
+        this.width = this.height = 100;
         Entity.__super__.constructor.apply(this, arguments);
         drawable(this);
       }
@@ -226,30 +228,43 @@
     };
   });
 
-  udefine('chione/game', ['chione/entity', 'chione/bind', 'chione/scene'], function(Entity, bind, Scene) {
+  udefine('chione/game', ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'], function(requestAnimationFrame, Entity, bind, Scene) {
     var Game;
     return Game = (function(_super) {
       __extends(Game, _super);
 
       function Game(descriptor) {
+        this.run = __bind(this.run, this);
+        var _this = this;
         if (!(this instanceof Game)) {
           return new Game(descriptor);
-        } else {
-          Game.__super__.constructor.call(this, null, descriptor);
         }
+        this.canvas = new fabric.Canvas('canvas');
+        this.canvas.setWidth(this.width);
+        this.canvas.setHeight(this.height);
+        Game.__super__.constructor.call(this, null, descriptor);
+        this.on('draw', function() {
+          return _this.canvas.renderAll();
+        });
       }
 
       Game.prototype.scene = function(factory) {
         return bind(this, factory, Scene);
       };
 
-      Game.run = function(sceneName) {
-        return Game.trigger('run', sceneName);
+      Game.prototype.run = function(sceneName) {
+        var sceneNames;
+        if (sceneName == null) {
+          sceneNames = Object.keys(this.children);
+          sceneName = sceneNames[sceneNames.length - 1];
+        }
+        this.trigger('run', sceneName);
+        return requestAnimationFrame(this.draw);
       };
 
       return Game;
 
-    }).call(this, Entity);
+    })(Entity);
   });
 
   udefine('chione/mixins/drawable', function() {
