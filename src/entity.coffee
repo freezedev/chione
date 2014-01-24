@@ -2,6 +2,8 @@ udefine ['chione/component', 'chione/bind', 'chione/mixins/drawable'], (Componen
       
   class Entity extends Component
     constructor: ->
+      @width = @height = 100
+      
       super
       
       drawable @
