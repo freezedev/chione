@@ -16,7 +16,7 @@
     <script src="../bower_components/almond/almond.js"></script>
     <script src="../bower_components/udefine/dist/udefine.js"></script>
     <script src="../bower_components/mixedice/dist/mixedice.js"></script>
-    <script src="../bower_components/pencilbox/dist/pencilbox.js"></script>
+    <script src="../bower_components/fabric/dist/all.js"></script>
     <script src="../bower_components/animframe/dist/animframe.js"></script>
     <script src="../bower_components/eventmap/dist/eventmap.js"></script>
     <script src="../dist/chione.js"></script>
@@ -28,13 +28,20 @@
 
   <body>
 
+    <canvas id="canvas"></canvas>
+
     <script>
       require(['chione/game'], function(Game) {
         Game(function() {
+          this.width = 800;
+          this.height = 480;
+          
           this.scene(function() {
             console.log(1);
           });
           console.log(this.children);
+          
+          this.run();
         });
       });
     </script>
