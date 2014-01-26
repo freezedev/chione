@@ -238,11 +238,12 @@
         var _this = this;
         if (!(this instanceof Game)) {
           return new Game(descriptor);
+        } else {
+          Game.__super__.constructor.call(this, null, descriptor);
         }
         this.canvas = new fabric.Canvas('canvas');
         this.canvas.setWidth(this.width);
         this.canvas.setHeight(this.height);
-        Game.__super__.constructor.call(this, null, descriptor);
         this.on('draw', function() {
           return _this.canvas.renderAll();
         });
@@ -258,8 +259,7 @@
           sceneNames = Object.keys(this.children);
           sceneName = sceneNames[sceneNames.length - 1];
         }
-        this.trigger('run', sceneName);
-        return requestAnimationFrame(this.draw);
+        return this.trigger('run', sceneName);
       };
 
       return Game;
