@@ -3,6 +3,8 @@ udefine ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'
     constructor: (descriptor) ->
       unless @ instanceof Game
         return new Game descriptor
+      else
+        super null, descriptor
       
       #canvasElement = document.createElement 'canvas'
       #canvasElement.id = 'canvas'
@@ -12,7 +14,6 @@ udefine ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'
       @canvas.setWidth @width
       @canvas.setHeight @height
       
-      super null, descriptor
 
       @on 'draw', =>
         @canvas.renderAll()
@@ -27,4 +28,4 @@ udefine ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'
       
       @trigger 'run', sceneName
       
-      requestAnimationFrame @draw
+      #requestAnimationFrame @draw
