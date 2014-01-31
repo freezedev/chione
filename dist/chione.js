@@ -154,13 +154,12 @@
   });
 
   udefine('chione/components/animatable', ['chione/component'], function(Component) {
-    var Animatable, _ref;
+    var Animatable;
     return Animatable = (function(_super) {
       __extends(Animatable, _super);
 
       function Animatable() {
-        _ref = Animatable.__super__.constructor.apply(this, arguments);
-        return _ref;
+        return Animatable.__super__.constructor.apply(this, arguments);
       }
 
       return Animatable;
@@ -169,13 +168,12 @@
   });
 
   udefine('chione/components/audio', ['chione/component'], function(Component) {
-    var Audio, _ref;
+    var Audio;
     return Audio = (function(_super) {
       __extends(Audio, _super);
 
       function Audio() {
-        _ref = Audio.__super__.constructor.apply(this, arguments);
-        return _ref;
+        return Audio.__super__.constructor.apply(this, arguments);
       }
 
       return Audio;
@@ -184,13 +182,12 @@
   });
 
   udefine('chione/components/collidable', ['chione/component'], function(Component) {
-    var Collidable, _ref;
+    var Collidable;
     return Collidable = (function(_super) {
       __extends(Collidable, _super);
 
       function Collidable() {
-        _ref = Collidable.__super__.constructor.apply(this, arguments);
-        return _ref;
+        return Collidable.__super__.constructor.apply(this, arguments);
       }
 
       return Collidable;
@@ -228,25 +225,28 @@
     };
   });
 
-  udefine('chione/game', ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'], function(requestAnimationFrame, Entity, bind, Scene) {
+  udefine('chione/game', ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene', 'gameboard/loop'], function(requestAnimationFrame, Entity, bind, Scene, Loop) {
     var Game;
     return Game = (function(_super) {
       __extends(Game, _super);
 
       function Game(descriptor) {
         this.run = __bind(this.run, this);
-        var _this = this;
+        var renderer, stage;
         if (!(this instanceof Game)) {
           return new Game(descriptor);
         } else {
           Game.__super__.constructor.call(this, null, descriptor);
         }
-        this.canvas = new fabric.Canvas('canvas');
-        this.canvas.setWidth(this.width);
-        this.canvas.setHeight(this.height);
-        this.on('draw', function() {
-          return _this.canvas.renderAll();
-        });
+        stage = new PIXI.Stage(0xFFFFFF, true);
+        renderer = new PIXI.autoDetectRenderer(this.width, this.height);
+        renderer.view.style.display = 'block';
+        document.body.appendChild(renderer.view);
+        this.on('draw', (function(_this) {
+          return function() {
+            return renderer.render(stage);
+          };
+        })(this));
       }
 
       Game.prototype.scene = function(factory) {
@@ -259,7 +259,9 @@
           sceneNames = Object.keys(this.children);
           sceneName = sceneNames[sceneNames.length - 1];
         }
-        return this.trigger('run', sceneName);
+        this.trigger('run', sceneName);
+        Loop.on('game:draw', this.draw);
+        return Loop.run();
       };
 
       return Game;
