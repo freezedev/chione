@@ -1,4 +1,4 @@
-udefine ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'], (requestAnimationFrame, Entity, bind, Scene) ->
+udefine ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene', 'gameboard/loop'], (requestAnimationFrame, Entity, bind, Scene, Loop) ->
   class Game extends Entity
     constructor: (descriptor) ->
       unless @ instanceof Game
@@ -6,17 +6,16 @@ udefine ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'
       else
         super null, descriptor
       
-      #canvasElement = document.createElement 'canvas'
-      #canvasElement.id = 'canvas'
-      #document.body.appendChild canvasElement
+      stage = new PIXI.Stage 0xFFFFFF, true
+    
+      renderer = new PIXI.autoDetectRenderer @width, @height
       
-      @canvas = new fabric.Canvas 'canvas'
-      @canvas.setWidth @width
-      @canvas.setHeight @height
+      renderer.view.style.display = 'block'
       
+      document.body.appendChild renderer.view
 
       @on 'draw', =>
-        @canvas.renderAll()
+        renderer.render stage
    
     scene: (factory) ->
       bind @, factory, Scene
@@ -28,4 +27,5 @@ udefine ['requestanimationframe', 'chione/entity', 'chione/bind', 'chione/scene'
       
       @trigger 'run', sceneName
       
-      #requestAnimationFrame @draw
+      Loop.on 'game:draw', @draw
+      Loop.run()
