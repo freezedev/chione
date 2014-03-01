@@ -12,6 +12,10 @@ Features:
 * Taggable components and entities
 * Based on Pixi.js
 
+Getting started
+---------------
+
+Chione is available on Bower using `bower install chione`.
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/freezedev/chione/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
