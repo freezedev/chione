@@ -17,5 +17,21 @@ Getting started
 
 Chione is available on Bower using `bower install chione`.
 
+
+What does it look like?
+-----------------------
+
+```coffeescript
+
+Game ->
+  @scene ->
+    @entity ->
+      @assetFromFile 'test.png'
+      @x = 5
+      @y = 10
+      
+  @run()
+```
+
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/freezedev/chione/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
